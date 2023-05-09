@@ -1,6 +1,9 @@
 FROM gcc:12-bullseye AS builder
 
-ENV LUA_VERSION   5.4.4
+ENV LUA_V         5.4
+ENV LUA_R         4
+
+ENV LUA_VERSION   ${LUA_V}.${LUA_R}
 ENV ROCKS_VERSION 3.9.2
 
 RUN mkdir -p /build/lua
@@ -20,6 +23,14 @@ RUN tar -xzf luarocks-${ROCKS_VERSION}.tar.gz --strip-components=1
 RUN ./configure --prefix=/usr/local && \
     make -j $(nproc) && \
     make install
+
+COPY <<EOF /usr/local/etc/luarocks/config-${LUA_V}.lua
+lua_interpreter = "lua";
+variables = {
+   LUA_DIR = "/usr/local";
+   LUA_BINDIR = "/usr/local/bin";
+}
+EOF
 
 FROM debian:bullseye
 
@@ -45,7 +56,6 @@ COPY --from=builder /build/lua/install/man/man1/luac.1 /usr/local/man/man1/luac.
 
 ## luarocks
 
-RUN mkdir /etc/luarocks
 RUN mkdir /usr/local/share/lua
 
 # binaries
@@ -53,13 +63,11 @@ COPY --from=builder /usr/local/bin/luarocks       /usr/local/bin/luarocks
 COPY --from=builder /usr/local/bin/luarocks-admin /usr/local/bin/luarocks-admin
 
 # lua files
-COPY --from=builder /usr/local/share/lua/         /usr/local/share/lua/
-
-# configuration
-COPY --from=builder /usr/local/etc/luarocks/      /usr/local/etc/luarocks/
+COPY --from=builder /usr/local/share/lua/    /usr/local/share/lua/
+COPY --from=builder /usr/local/etc/luarocks/ /usr/local/etc/luarocks/
 
 RUN apt update && \
-    apt install --yes bash-completion sudo git build-essential
+    apt install --yes bash-completion sudo git build-essential unzip
 
 ARG USERNAME=vscode
 ARG UID=1000
@@ -72,3 +80,6 @@ RUN groupadd --gid ${GID} ${USERNAME} \
     && chmod 0440 /etc/sudoers.d/${USERNAME}
 
 USER ${USERNAME}
+
+RUN mkdir -p "$HOME/.luarocks"
+RUN cp /usr/local/etc/luarocks/config-*.lua "$HOME/.luarocks/"
