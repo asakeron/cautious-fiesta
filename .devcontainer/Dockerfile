@@ -67,7 +67,7 @@ COPY --from=builder /usr/local/share/lua/    /usr/local/share/lua/
 COPY --from=builder /usr/local/etc/luarocks/ /usr/local/etc/luarocks/
 
 RUN apt update && \
-    apt install --yes bash-completion sudo git build-essential unzip
+    apt install --yes bash-completion sudo git build-essential unzip wget
 
 ARG USERNAME=vscode
 ARG UID=1000
@@ -81,5 +81,7 @@ RUN groupadd --gid ${GID} ${USERNAME} \
 
 USER ${USERNAME}
 
-RUN mkdir -p "$HOME/.luarocks"
+# Create the user luarocks tree and append it's scripts to PATH
+RUN mkdir -p "${HOME}/.luarocks/bin"
 RUN cp /usr/local/etc/luarocks/config-*.lua "$HOME/.luarocks/"
+ENV PATH="${PATH}:${HOME}/.luarocks/bin"
