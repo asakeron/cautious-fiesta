@@ -7,7 +7,15 @@
         "vscode": {
             "extensions": [
                 "sumneko.lua"
-            ]
+            ],
+            "settings": {
+                "files.associations": {
+                    "*.rockspec": "lua"
+                },
+                "Lua.workspace.library": [
+                    "./lua_modules"
+                ]
+            }
         }
     }
 }
