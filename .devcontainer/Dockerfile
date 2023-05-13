@@ -27,13 +27,7 @@ RUN ./configure --prefix=/usr/local && \
     make -j $(nproc) && \
     make install
 
-COPY <<EOF /usr/local/etc/luarocks/config-${LUA_V}.lua
-lua_interpreter = "lua";
-variables = {
-   LUA_DIR = "/usr/local";
-   LUA_BINDIR = "/usr/local/bin";
-}
-EOF
+COPY ./luarocks.config.lua /usr/local/etc/luarocks/config-${LUA_V}.lua
 
 FROM builder
 
