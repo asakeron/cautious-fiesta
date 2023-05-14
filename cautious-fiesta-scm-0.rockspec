@@ -20,7 +20,7 @@ build = {
 }
 test_dependencies = {
    "busted >= 2.1,  < 3",
-   "luacov >= 0.15, < 1"
+   "luacov >= 0.15, < 1",
 }
 test = {
    type = "busted",

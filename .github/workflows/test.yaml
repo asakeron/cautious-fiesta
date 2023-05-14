@@ -16,4 +16,5 @@ jobs:
           ./luarocks make
       - name: test
         run: |
+          ./luarocks install luacov
           ./luarocks test
