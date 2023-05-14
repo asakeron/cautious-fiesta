@@ -15,7 +15,7 @@ dependencies = {
 build = {
    type = "builtin",
    modules = {
-      "src/dhall.lua",
+      dhall = "src/dhall.lua"
    },
 }
 test_dependencies = {
