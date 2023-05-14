@@ -1,0 +1,7 @@
+return {
+  _all = {
+    coverage = true,
+    pattern = ".spec",
+    ROOT = { "src/" }
+  },
+}

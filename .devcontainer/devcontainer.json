@@ -10,7 +10,8 @@
             ],
             "settings": {
                 "files.associations": {
-                    "*.rockspec": "lua"
+                    "*.rockspec": "lua",
+                    ".busted": "lua"
                 },
                 "Lua.workspace.library": [
                     "./lua_modules"
