@@ -6,7 +6,8 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "sumneko.lua"
+                "sumneko.lua",
+                "redhat.vscode-yaml"
             ],
             "settings": {
                 "files.associations": {

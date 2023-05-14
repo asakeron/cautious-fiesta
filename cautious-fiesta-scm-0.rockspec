@@ -15,12 +15,12 @@ dependencies = {
 build = {
    type = "builtin",
    modules = {
-      "src/dhall.lua",
+      dhall = "src/dhall.lua"
    },
 }
 test_dependencies = {
    "busted >= 2.1,  < 3",
-   "luacov >= 0.15, < 1"
+   "luacov >= 0.15, < 1",
 }
 test = {
    type = "busted",
